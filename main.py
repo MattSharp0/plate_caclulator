@@ -16,7 +16,7 @@ def calc_plates(target_weight:int, bar:int = 45, plates:list = plates_lb) -> dic
         remainder:int = remaning % plate
         
         remaning = remainder
-        plate_assignments[plate] = plate_count
+        plate_assignments[plate] = plate_count*2
         
         if remainder == 0:
             break
