@@ -1,8 +1,6 @@
 
 plates_lb:list = [45,35,25,15,10,5,2.5,1.25]
 
-weight:float|int = 135
-
 def calc_plates(target_weight:int, bar:int = 45, plates:list = plates_lb) -> dict:
 
     if target_weight < bar:
