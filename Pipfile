@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = {version = "*", extras = ["standard"]}
+wheel = "*"
+python-multipart = "*"
 
 [dev-packages]
 
