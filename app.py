@@ -1,6 +1,9 @@
 import logging
 from fastapi import FastAPI, Query
+from starlette import status
 from typing import Annotated, Union
+
+from fastapi.responses import RedirectResponse
 
 from plate_calculator import Plate_Calculator
 
@@ -12,6 +15,11 @@ log.info('App intiated')
 
 imperial:dict = {'bars':[45,35],'plates':[45,35,25,15,10,5,2.5,1.25]}
 metric:dict = {'bars':[20,16],'plates':[20, 16, 11, 7, 5, 2, 1, .5]}
+
+@app.get('/')
+def root():
+    return RedirectResponse(url='/plate_caclulator', status_code=status.HTTP_302_FOUND)
+
 
 @app.get('/plate_calculator')
 def return_weight_options(system:Union[str, None]=None):
