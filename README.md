@@ -19,10 +19,10 @@ And voila:
         "remaining":0.0},
     ...}
 
-If you want to get bit fancier, you can also pass optional query parameter in the url:
+If you want to get bit fancier, you can also pass optional query parameters in the url:
 
 - `exclude_plate=35` will perform the calculation without whatever plate size is passed. For multiple, simply repeat as needed. The calculation will round down if the exact weight is unattainable
-- `metric_or_imperial=imperial` does what it says on the tin. I have no idea what standard kg weights are so these are mostly just equiivlants to imperial counterparts. Default is **Imperial**
+- `metric_or_imperial=imperial` does what it says on the tin. I have no idea what standard kg weights are so these are mostly just equivalents to imperial counterparts. Default is **Imperial**
 - `bar_weight=35` will set the bar weight to 35, for those who are fans of the 'light' bar (which is often yellow). Default is 45 (typically blue).
 
 For example:
