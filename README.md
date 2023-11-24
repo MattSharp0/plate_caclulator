@@ -1,7 +1,9 @@
 # Plate Calculator
 Recently my workout app of choice blocked it's plate calculator tool behind a paid tier. Personally I hate doing mental maths so instead of paying the ~$6 a year I spent 6 hours making this.
 
-To use, go to apps.mattsharp.dev/plate_calculator and append a weight (in pounds) that you'd like the plates for:
+To use, either:
+- get [this Apple shortcut](https://www.icloud.com/shortcuts/cce7cea6b290417890267def43c0c722)
+- go to apps.mattsharp.dev/plate_calculator and append a weight (in pounds) that you'd like the plates for:
 
 ex: `apps.mattsharp.dev/plate_calculator/220`
 
