@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 
 from plate_calculator import Plate_Calculator
 
-logging.basicConfig(format='%(levelname)s: %(asctime)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
+logging.basicConfig(format='%(levelname)s: %(asctime)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 log = logging.getLogger(__name__)
 
 app = FastAPI()
