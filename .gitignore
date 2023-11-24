@@ -1,2 +1,4 @@
 pipfile.lock
+pipefile
 .vscode/
+__pycache__
