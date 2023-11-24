@@ -18,7 +18,7 @@ metric:dict = {'bars':[20,16],'plates':[20, 16, 11, 7, 5, 2, 1, .5]}
 
 @app.get('/')
 def root():
-    return RedirectResponse(url='/plate_calculator', status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url='/docs', status_code=status.HTTP_302_FOUND)
 
 
 @app.get('/plate_calculator')
