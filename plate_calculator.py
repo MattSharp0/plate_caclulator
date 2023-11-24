@@ -40,15 +40,15 @@ if __name__ == "__main__":
     # plates_lb:list = [45,35,25,15,10,5,2.5,1.25]
     plates_lb:list = [45,10,5]
 
-    # print(calc_plates(target_weight=90, plates=plates_lb))
-    # print(calc_plates(target_weight=135, plates=plates_lb))
-    # print(calc_plates(target_weight=140, plates=plates_lb))
-    # print(calc_plates(target_weight=180, plates=plates_lb))
-    print(calc_plates(target_weight=185, plates=plates_lb))
-    # print(calc_plates(target_weight=191, plates=plates_lb))
-    # print(calc_plates(target_weight=195, plates=plates_lb))
+    print(Plate_Calculator(target_weight=90, plates=plates_lb))
+    print(Plate_Calculator(target_weight=135, plates=plates_lb))
+    print(Plate_Calculator(target_weight=140, plates=plates_lb))
+    print(Plate_Calculator(target_weight=180, plates=plates_lb))
+    print(Plate_Calculator(target_weight=185, plates=plates_lb))
+    print(Plate_Calculator(target_weight=191, plates=plates_lb))
+    print(Plate_Calculator(target_weight=195, plates=plates_lb))
 
-    # try: 
-    #     print(calc_plates(target_weight=35, plates=plates_lb))
-    # except ValueError as e:
-    #     print(e)
+    try: 
+        print(Plate_Calculator(target_weight=35, plates=plates_lb))
+    except ValueError as e:
+        print(e)
