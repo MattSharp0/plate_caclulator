@@ -6,34 +6,95 @@
     <br>
     <p>Enter a target weight, exclude plates and/or adjust the bar weight as needed</p>
 </div>
-<div id="pc_form">
-    <form action="">
-        <input type="number" name="target_weight" id="target_weight">
+<div id="pc">
+    <form id="pc_form" action="" method="get">
+        <input type="number" id="target_weight" required>
         <label for="target_weight"> Target Weight</label><br>
+        <p id="errorMessage" class="error-message"></p>
         <br>
-        <p>Imperial (lbs) or Metric (kg)?</p>
+        {# <p>Imperial (lbs) or Metric (kg)?</p>
         <input type="radio" name="metric_or_imperial" id="imperial">
         <label for="imperial"> Imperial</label><br>
         <input type="radio" name="metric_or_imperial" id="metric">
         <label for="metric"> Metric</label><br>
-        <br>
+        <br> #}
         <input type="number" name="bar_weight" id="bar_weight" value=45>
-        <label for="bar_weight"> Bar Weight</label><br>
+        <label for="bar_weight"> Bar Weight (lbs)</label><br>
         <br>
         <p>Select Available Plates:</p>
-        {% if imperial %}
-        {% for plate in plate_options %}
-        <input type="checkbox" checked="checked" name={{plate.weight}} id={{plate.weight}}>
-        <label for="{{plate.weight}}"> {{plate.weight}}lbs</label><br>
+        {% for plate in plates %}
+        <input type="checkbox" checked="checked" name="excludeWeights" value={{plate}}>
+        <label for="{{plate}}"> {{plate}} lbs</label><br>
         {% endfor %}
-        {% elseif metric %}
-        {% for plate in plate_options %}
-        <input type="checkbox" checked="checked" name={{plate.weight}} id={{plate.weight}}>
-        <label for="{{plate.weight}}"> {{plate.weight}}lbs</label><br>
-        {% endfor %}
-        {% endif %}
         <br>
-        <input type="submit" value="Calculate">
+        <button type="button" onclick="submitForm()">Calculate</button>
     </form>
+    <h4>Results:</h4>
+    <div id="resultContainer"></div>
 </div>
 {% endblock %}
+{% block footer %}
+<!-- The following code was written by ChatGPT and edited to work by me, I take no credit for this and do not know nearly enough JS-->
+<script>
+function submitForm() {
+  var targetWeight = document.getElementById("target_weight").value;
+  var barWeight = document.getElementById("bar_weight").value;
+
+  console.log(targetWeight < barWeight)
+
+  // Check if the required field is above the value of the optional field
+  if (targetWeight < barWeight) {
+    errorMessage.textContent = "The target weight is less than the bar!";
+    target_weight.number = 45
+    return false; // Prevent form submission
+  }
+  errorMessage.textContent = "";
+
+  var excludeWeights = document.querySelectorAll('input[name="excludeWeights"]:not(:checked)');
+  var apiUrl = window.location + "/" + encodeURIComponent(targetWeight);
+  if (excludeWeights.length > 0) {
+    var excludeWeightsArray = Array.from(excludeWeights).map(function (checkbox) {
+      return 'exclude_number=' + encodeURIComponent(checkbox.value);
+    });
+
+    apiUrl += '?' + excludeWeightsArray.join('&');
+  }
+  console.log("API URL: ", apiUrl);
+
+  // Submit to API
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+
+      var resultContainer = document.getElementById("resultContainer");
+
+      // Clear previous results
+      resultContainer.innerHTML = '';
+
+      // Iterate over properties of the JSON object and display the result
+      var plates = data['plate_calculation']['plates']
+      for (var number in plates) {
+        if (plates.hasOwnProperty(number)) {
+          var count = plates[number];
+
+          // Create a new paragraph element for each number and count
+          var paragraph = document.createElement("p");
+          paragraph.textContent = number + " lbs x " + count;
+
+          // Append the paragraph to the result container
+          resultContainer.appendChild(paragraph);
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Optionally handle errors (no thanks)
+    });
+}
+</script> 
+{% endblock%}
