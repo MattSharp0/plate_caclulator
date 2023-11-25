@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Plate Calculator{% endblock %}
+{% block content %}
+<div id="pc_title">
+    <h1>Plate Calculator</h1>
+    <br>
+    <p>Enter a target weight, exclude plates and/or adjust the bar weight as needed</p>
+</div>
+<div id="pc_form">
+    <form action="">
+        <input type="number" name="target_weight" id="target_weight">
+        <label for="target_weight"> Target Weight</label><br>
+        <br>
+        <p>Imperial (lbs) or Metric (kg)?</p>
+        <input type="radio" name="metric_or_imperial" id="imperial">
+        <label for="imperial"> Imperial</label><br>
+        <input type="radio" name="metric_or_imperial" id="metric">
+        <label for="metric"> Metric</label><br>
+        <br>
+        <input type="number" name="bar_weight" id="bar_weight" value=45>
+        <label for="bar_weight"> Bar Weight</label><br>
+        <br>
+        <p>Select Available Plates:</p>
+        {% if imperial %}
+        {% for plate in plate_options %}
+        <input type="checkbox" checked="checked" name={{plate.weight}} id={{plate.weight}}>
+        <label for="{{plate.weight}}"> {{plate.weight}}lbs</label><br>
+        {% endfor %}
+        {% elseif metric %}
+        {% for plate in plate_options %}
+        <input type="checkbox" checked="checked" name={{plate.weight}} id={{plate.weight}}>
+        <label for="{{plate.weight}}"> {{plate.weight}}lbs</label><br>
+        {% endfor %}
+        {% endif %}
+        <br>
+        <input type="submit" value="Calculate">
+    </form>
+</div>
+{% endblock %}
