@@ -41,33 +41,31 @@
 <!-- The following code was written by ChatGPT and edited to work by me, I take no credit for this and do not know nearly enough JS-->
 <script>
 function submitForm() {
-  var targetWeight = parseFloat(document.getElementById("targetWeight").value);
-  var barWeight = parseFloat(document.getElementById("barWeight").value);
+  const form = document.getElementById("pcForm");
+  const targetWeight = parseFloat(document.getElementById("targetWeight").value);
+  const barWeight = parseFloat(document.getElementById("barWeight").value);
+  const errorMessage = document.getElementById("errorMessage");
+  const resultContainer = document.getElementById("resultContainer");
 
-  
-  console.log(targetWeight < barWeight)
-
-  // Check if the required field is above the value of the optional field
   if (targetWeight < barWeight) {
-    console.log("Target weight less than bar")
     errorMessage.textContent = "The target weight is less than the bar!";
-    document.getElementById("pc_form").reset(); 
-    return; // Prevent form submission
+    form.reset();
+    return;
   }
+
   errorMessage.textContent = "";
 
-  var excludeWeights = document.querySelectorAll('input[name="excludeWeights"]:not(:checked)');
-  var apiUrl = window.location + "/" + encodeURIComponent(targetWeight);
+  const excludeWeights = document.querySelectorAll('input[name="excludeWeights"]:not(:checked)');
+  let apiUrl = `${window.location}/${encodeURIComponent(targetWeight)}`;
+
   if (excludeWeights.length > 0) {
-    var excludeWeightsArray = Array.from(excludeWeights).map(function (checkbox) {
+    const excludeWeightsArray = Array.from(excludeWeights).map(checkbox => {
       return 'exclude_plates=' + encodeURIComponent(checkbox.value);
     });
 
     apiUrl += '?' + excludeWeightsArray.join('&');
   }
-  console.log("API URL: ", apiUrl);
 
-  // Submit to API
   fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
@@ -76,30 +74,22 @@ function submitForm() {
       return response.json();
     })
     .then(data => {
-
-      var resultContainer = document.getElementById("resultContainer");
-
-      // Clear previous results
       resultContainer.innerHTML = '';
 
-      // Iterate over properties of the JSON object and display the result
-      var plates = data['plate_calculation']['plates']
-      for (var number in plates) {
-        if (plates.hasOwnProperty(number)) {
-          var count = plates[number];
+      const plates = data['plate_calculation']['plates'];
+      const keysArray = Object.keys(plates);
 
-          // Create a new paragraph element for each number and count
-          var paragraph = document.createElement("p");
-          paragraph.textContent = number + " lbs x " + count;
+      keysArray.sort((a, b) => parseFloat(b) - parseFloat(a));
 
-          // Append the paragraph to the result container
-          resultContainer.appendChild(paragraph);
-        }
-      }
+      keysArray.forEach(number => {
+        const count = plates[number];
+        const paragraph = document.createElement("p");
+        paragraph.textContent = `${number} lbs x ${count}`;
+        resultContainer.appendChild(paragraph);
+      });
     })
     .catch(error => {
       console.error('Error:', error);
-      // Optionally handle errors (no thanks)
     });
 }
 </script> 
