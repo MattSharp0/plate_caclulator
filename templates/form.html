@@ -1,52 +1,58 @@
 {% extends "base.html" %}
 {% block title %}Plate Calculator{% endblock %}
 {% block content %}
-<div id="pc_title">
+<div id="pc">
+  <div id="pcTitle">
     <h1>Plate Calculator</h1>
     <br>
-    <p>Enter a target weight, exclude plates and/or adjust the bar weight as needed</p>
-</div>
-<div id="pc">
-    <form id="pc_form" action="" method="get">
-        <input type="number" id="target_weight" required>
-        <label for="target_weight"> Target Weight</label><br>
-        <p id="errorMessage" class="error-message"></p>
-        <br>
-        {# <p>Imperial (lbs) or Metric (kg)?</p>
-        <input type="radio" name="metric_or_imperial" id="imperial">
-        <label for="imperial"> Imperial</label><br>
-        <input type="radio" name="metric_or_imperial" id="metric">
-        <label for="metric"> Metric</label><br>
-        <br> #}
-        <input type="number" name="bar_weight" id="bar_weight" value=45>
-        <label for="bar_weight"> Bar Weight (lbs)</label><br>
-        <br>
-        <p>Select Available Plates:</p>
-        {% for plate in plates %}
+    <p>Enter a target weight, exclude plates and/or adjust the bar weight as needed:</p>
+  </div>
+  <form id="pcForm" action="" method="get">
+      <input type="number" id="targetWeight" min="0" step="5" required>
+      <label for="target_weight"> Target Weight (lbs)</label>
+      <p id="errorMessage" class="errorMessage"></p>
+      <br>
+      {# <p>Imperial (lbs) or Metric (kg)?</p>
+      <input type="radio" name="metric_or_imperial" id="imperial">
+      <label for="imperial"> Imperial</label><br>
+      <input type="radio" name="metric_or_imperial" id="metric">
+      <label for="metric"> Metric</label><br>
+      <br> #}
+      <input type="number" name="bar_weight" id="barWeight" value=45 min="0" step="5">
+      <label for="bar_weight"> Bar Weight (lbs)</label><br>
+      <p>Select Available Plates:</p>
+      <div class="checkbox-group">
+      {% for plate in plates %}
+      <label for="{{plate}}">
         <input type="checkbox" checked="checked" name="excludeWeights" value={{plate}}>
-        <label for="{{plate}}"> {{plate}} lbs</label><br>
-        {% endfor %}
-        <br>
-        <button type="button" onclick="submitForm()">Calculate</button>
+      {{plate}} lbs</label>
+      {% endfor %}
+      </div>
+      <br>
+      <button type="button" onclick="submitForm()">Calculate</button>
     </form>
-    <h4>Results:</h4>
-    <div id="resultContainer"></div>
+    <div id="results">
+      <h4 id="resultsTitle">Plates needed:</h4>
+      <div id="resultContainer"></div>
+    </div>
 </div>
 {% endblock %}
 {% block footer %}
 <!-- The following code was written by ChatGPT and edited to work by me, I take no credit for this and do not know nearly enough JS-->
 <script>
 function submitForm() {
-  var targetWeight = document.getElementById("target_weight").value;
-  var barWeight = document.getElementById("bar_weight").value;
+  var targetWeight = parseFloat(document.getElementById("targetWeight").value);
+  var barWeight = parseFloat(document.getElementById("barWeight").value);
 
+  
   console.log(targetWeight < barWeight)
 
   // Check if the required field is above the value of the optional field
   if (targetWeight < barWeight) {
+    console.log("Target weight less than bar")
     errorMessage.textContent = "The target weight is less than the bar!";
-    target_weight.number = 45
-    return false; // Prevent form submission
+    document.getElementById("pc_form").reset(); 
+    return; // Prevent form submission
   }
   errorMessage.textContent = "";
 
@@ -54,7 +60,7 @@ function submitForm() {
   var apiUrl = window.location + "/" + encodeURIComponent(targetWeight);
   if (excludeWeights.length > 0) {
     var excludeWeightsArray = Array.from(excludeWeights).map(function (checkbox) {
-      return 'exclude_number=' + encodeURIComponent(checkbox.value);
+      return 'exclude_plates=' + encodeURIComponent(checkbox.value);
     });
 
     apiUrl += '?' + excludeWeightsArray.join('&');
